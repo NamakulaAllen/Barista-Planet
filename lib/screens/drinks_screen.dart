@@ -209,6 +209,8 @@ class DrinksScreen extends StatelessWidget {
     ],
   };
 
+  DrinksScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

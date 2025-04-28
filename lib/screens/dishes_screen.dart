@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dish_detail_screen.dart';
+import 'add_edit_dish_screen.dart';
 
 class DishesScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> dishes = [
+  // Local data as a fallback
+  final List<Map<String, dynamic>> localDishes = [
     {
       'name': 'Cappuccino Cup',
       'image': 'assets/images/cool1.jpg',
@@ -75,6 +78,8 @@ class DishesScreen extends StatelessWidget {
     },
   ];
 
+  DishesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,73 +87,97 @@ class DishesScreen extends StatelessWidget {
         title: Text(
           'COFFEE DISHES',
           style: TextStyle(
-            color: Colors.white, // Set title text color to white
-            fontWeight: FontWeight.bold, // Set title text to bold
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Color(0xFF794022),
-        centerTitle: true, // Center the title
+        centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // White back arrow
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
+            Navigator.pop(context);
           },
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 2 items per row
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 0.8,
+        child: _buildGrid(localDishes),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _addNewDish(context),
+        backgroundColor: Color(0xFF794022),
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildGrid(List<Map<String, dynamic>> dishes) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.8,
+      ),
+      itemCount: dishes.length,
+      itemBuilder: (context, index) {
+        final dish = dishes[index];
+        return _buildDishCard(context, dish);
+      },
+    );
+  }
+
+  Widget _buildDishCard(BuildContext context, Map<String, dynamic> dish) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DishDetailScreen(
+              dish: dish,
+              isAdmin: true, // Assuming admin access for simplicity
+            ),
           ),
-          itemCount: dishes.length,
-          itemBuilder: (context, index) {
-            final dish = dishes[index];
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DishDetailScreen(dish: dish),
-                  ),
-                );
-              },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                elevation: 5,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(15)),
-                        child: Image.asset(
-                          dish['image'],
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        dish['name'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 5,
+        child: Column(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                child: Image.asset(
+                  dish['image'] ?? 'assets/images/default.jpg',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
-            );
-          },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                dish['name'],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  void _addNewDish(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddEditDishScreen(),
       ),
     );
   }

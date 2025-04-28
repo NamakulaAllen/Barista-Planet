@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CurriculumPage extends StatelessWidget {
-  const CurriculumPage({Key? key}) : super(key: key);
+  const CurriculumPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,8 +10,9 @@ class CurriculumPage extends StatelessWidget {
         title: const Text(
           'COURSE CURRICULUM',
           style: TextStyle(
-            color: Colors.white,
+            fontSize: 18, // Adjusted font size for title
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         backgroundColor: Color(0xFF794022),
@@ -30,7 +31,7 @@ class CurriculumPage extends StatelessWidget {
                   Text(
                     'Welcome to the Barista Planet Coffee Institute Course!',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18, // Adjusted font size for title
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF794022),
                     ),
@@ -38,7 +39,7 @@ class CurriculumPage extends StatelessWidget {
                   SizedBox(height: 10),
                   Text(
                     'This course will take you on a 4-week journey to master coffee skills and business management.',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 15), // Font size for description
                   ),
                 ],
               ),
@@ -47,7 +48,8 @@ class CurriculumPage extends StatelessWidget {
             CurriculumCard(
               week: "Week 1",
               title: "History of Coffee",
-              description: "Learn the rich history and origin of coffee, its journey around the world, and its significance in various cultures.",
+              description:
+                  "Learn the rich history and origin of coffee, its journey around the world, and its significance in various cultures.",
               topics: [
                 "Origin and Spread of Coffee",
                 "Cultural Impact of Coffee",
@@ -58,7 +60,8 @@ class CurriculumPage extends StatelessWidget {
             CurriculumCard(
               week: "Week 2",
               title: "Managing a Coffee Business",
-              description: "Understand the essentials of managing a coffee shop, from inventory to customer relations and business strategy.",
+              description:
+                  "Understand the essentials of managing a coffee shop, from inventory to customer relations and business strategy.",
               topics: [
                 "Coffee Shop Setup",
                 "Inventory Management",
@@ -70,7 +73,8 @@ class CurriculumPage extends StatelessWidget {
             CurriculumCard(
               week: "Week 3",
               title: "Coffee Brewing Techniques",
-              description: "Master the preparation of various coffee types including espresso, latte, cappuccino, and more.",
+              description:
+                  "Master the preparation of various coffee types including espresso, latte, cappuccino, and more.",
               topics: [
                 "Espresso Making",
                 "Latte Art",
@@ -81,7 +85,8 @@ class CurriculumPage extends StatelessWidget {
             CurriculumCard(
               week: "Week 4",
               title: "Cold Coffees, Mojitos, Juices, and Milkshakes",
-              description: "Learn to prepare a variety of cold beverages including iced coffee, mojitos, fresh juices, and milkshakes.",
+              description:
+                  "Learn to prepare a variety of cold beverages including iced coffee, mojitos, fresh juices, and milkshakes.",
               topics: [
                 "Iced Coffee Brewing",
                 "Mojito Preparation",
@@ -105,6 +110,7 @@ class CurriculumCard extends StatelessWidget {
   final Color color;
 
   const CurriculumCard({
+    super.key,
     required this.week,
     required this.title,
     required this.description,
@@ -127,7 +133,7 @@ class CurriculumCard extends StatelessWidget {
             Text(
               '$week - $title',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 18, // Adjusted font size for title
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
@@ -135,14 +141,14 @@ class CurriculumCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               description,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 15), // Font size for description
             ),
             const SizedBox(height: 10),
             const Divider(),
             Text(
               'Key Topics:',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 18, // Adjusted font size for title
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
@@ -155,7 +161,10 @@ class CurriculumCard extends StatelessWidget {
                   Icons.check_circle,
                   color: color,
                 ),
-                title: Text(topic),
+                title: Text(
+                  topic,
+                  style: const TextStyle(fontSize: 15), // Font size for topics
+                ),
               ),
           ],
         ),

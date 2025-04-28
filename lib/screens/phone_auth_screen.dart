@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
+  const PhoneAuthScreen({super.key});
+
   @override
   _PhoneAuthScreenState createState() => _PhoneAuthScreenState();
 }
@@ -54,7 +56,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
         Navigator.pushReplacementNamed(context, '/home');
       },
       verificationFailed: (FirebaseAuthException e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message!)));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message!)));
       },
       codeSent: (String verificationId, int? resendToken) {
         setState(() {
@@ -77,7 +80,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
       // After successful login, navigate to home page
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 }

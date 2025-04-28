@@ -1,68 +1,128 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupChatScreen extends StatefulWidget {
   final String groupId;
-  final String groupName;
-  final String userId;
+  final String currentUserId;
+  final bool isAdmin;
 
-  GroupChatScreen({
+  const GroupChatScreen({
+    super.key,
     required this.groupId,
-    required this.groupName,
-    required this.userId,
+    required this.currentUserId,
+    required this.isAdmin,
   });
 
   @override
-  _GroupChatScreenState createState() => _GroupChatScreenState();
+  State<GroupChatScreen> createState() => _GroupChatScreenState();
 }
 
 class _GroupChatScreenState extends State<GroupChatScreen> {
   final TextEditingController _messageController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendMessage() async {
-    final message = _messageController.text;
-    if (message.isEmpty) return;
+  void _sendMessage() {
+    final text = _messageController.text.trim();
+    if (text.isEmpty) return;
 
-    await FirebaseFirestore.instance.collection('groups').doc(widget.groupId).collection('messages').add({
-      'senderId': widget.userId,
-      'message': message,
-      'timestamp': Timestamp.now(),
+    _firestore
+        .collection('groups')
+        .doc(widget.groupId)
+        .collection('messages')
+        .add({
+      'senderId': widget.currentUserId,
+      'text': text,
+      'timestamp': FieldValue.serverTimestamp(),
     });
 
     _messageController.clear();
   }
 
+  void _deleteMessage(String messageId, bool forEveryone) {
+    if (forEveryone) {
+      _firestore
+          .collection('groups')
+          .doc(widget.groupId)
+          .collection('messages')
+          .doc(messageId)
+          .delete();
+    } else {
+      _firestore
+          .collection('groups')
+          .doc(widget.groupId)
+          .collection('messages')
+          .doc(messageId)
+          .update({
+        'deletedFor': FieldValue.arrayUnion([widget.currentUserId]),
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.groupName)),
+      appBar: AppBar(
+        title: const Text("Group Chat"),
+        actions: widget.isAdmin
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.person_add),
+                  onPressed: () {
+                    // Add functionality to accept join requests
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Accept join requests")),
+                    );
+                  },
+                ),
+              ]
+            : null,
+      ),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
                   .collection('groups')
                   .doc(widget.groupId)
                   .collection('messages')
-                  .orderBy('timestamp')
+                  .orderBy('timestamp', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text("No messages"));
+                } else {
+                  final messages = snapshot.data!.docs;
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      final isDeletedForMe = (message['deletedFor'] as List?)
+                              ?.contains(widget.currentUserId) ??
+                          false;
 
-                var messages = snapshot.data!.docs;
-                return ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    var message = messages[index];
-                    return ListTile(
-                      title: Text(message['message']),
-                      subtitle: Text(message['senderId']),
-                    );
-                  },
-                );
+                      if (isDeletedForMe) {
+                        return const ListTile(title: Text("[Message deleted]"));
+                      }
+
+                      return ListTile(
+                        title: Text(message['text']),
+                        subtitle: Text(message['senderId']),
+                        trailing: widget.isAdmin ||
+                                message['senderId'] == widget.currentUserId
+                            ? IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteMessage(message.id, widget.isAdmin);
+                                },
+                              )
+                            : null,
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
@@ -73,14 +133,13 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                    ),
+                    decoration:
+                        const InputDecoration(hintText: "Type a message"),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: sendMessage,
+                  icon: const Icon(Icons.send),
+                  onPressed: _sendMessage,
                 ),
               ],
             ),

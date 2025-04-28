@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'drink_details_screen.dart'; // Import DrinkDetailsScreen
+import 'drink_details_screen.dart';
 
 class CategoryScreen extends StatelessWidget {
   final String category;
@@ -14,14 +14,14 @@ class CategoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           category,
-          style: TextStyle(color: Colors.white), // Set the title color to white
+          style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF794022), // Using brown for the app bar
+        backgroundColor: Color(0xFF794022),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // White arrow icon
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Navigate back on icon press
+            Navigator.pop(context);
           },
         ),
       ),
@@ -55,13 +55,12 @@ class CategoryScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF794022), // Brown text for drink name
+                          color: Color(0xFF794022),
                         ),
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        color: Color(0xFF794022)
-                            .withOpacity(0.6), // Brown arrow icon
+                        color: Color(0xFF794022).withOpacity(0.6),
                       ),
                     ],
                   ),

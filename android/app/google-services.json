@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "285023635629",
+    "project_id": "barista-planet-658c1",
+    "storage_bucket": "barista-planet-658c1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285023635629:android:265295e8cf19288e3f9e24",
+        "android_client_info": {
+          "package_name": "com.example.instute_planet"
+          
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApTx46KEbWd0w9IeVATkDbN7Z-OjDmABk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285023635629:android:5a6e84a707503f533f9e24",
+        "android_client_info": {
+          "package_name": "com.example.instute_planet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApTx46KEbWd0w9IeVATkDbN7Z-OjDmABk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
