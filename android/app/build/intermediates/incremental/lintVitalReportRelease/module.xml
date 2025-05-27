@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\WITI\Desktop\barista_planet\android\app"
+    name=":app"
+    type="APP"
+    maven="android:app:"
+    agpVersion="8.1.0"
+    buildFolder="build"
+    bootClassPath="C:\Users\WITI\AppData\Local\Android\sdk\platforms\android-35\android.jar;C:\Users\WITI\AppData\Local\Android\sdk\build-tools\33.0.1\core-lambda-stubs.jar"
+    javaSourceLevel="17"
+    compileTarget="android-35"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

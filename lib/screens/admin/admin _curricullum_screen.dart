@@ -11,87 +11,16 @@ class AdminCurriculumScreen extends StatefulWidget {
 class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Fixed _localCurriculum list
-  final List<Map<String, dynamic>> _localCurriculum = [
-    {
-      'week': "Week 1",
-      'title': "History of Coffee",
-      'description': "Learn the rich history and origin of coffee...",
-      'topics': [
-        "Origin and Spread of Coffee",
-        "Cultural Impact of Coffee",
-        "Evolution of Coffee Brewing",
-      ],
-    },
-    {
-      'week': "Week 2",
-      'title': "Managing a Coffee Business",
-      'description':
-          "Understand the essentials of managing a coffee shop, from inventory to customer relations and business strategy.",
-      'topics': [
-        "Coffee Shop Setup",
-        "Inventory Management",
-        "Customer Service",
-        "Business Strategy",
-      ],
-    },
-    {
-      'week': "Week 3",
-      'title': "Coffee Brewing Techniques",
-      'description':
-          "Master the preparation of various coffee types including espresso, latte, cappuccino, and more.",
-      'topics': [
-        "Espresso Making",
-        "Latte Art",
-        "Cappuccino and More",
-      ],
-    },
-    {
-      'week': "Week 4",
-      'title': "Cold Coffees, Mojitos, Juices, and Milkshakes",
-      'description':
-          "Learn to prepare a variety of cold beverages including iced coffee, mojitos, fresh juices, and milkshakes.",
-      'topics': [
-        "Iced Coffee Brewing",
-        "Mojito Preparation",
-        "Juicing Techniques",
-        "Milkshake Mastery",
-      ],
-    },
-  ];
-
-  // Migrate local curriculum to Firestore
-  Future<void> _migrateCurriculum() async {
-    try {
-      final curriculumRef = _firestore.collection('curriculum');
-      final batch = _firestore.batch();
-      for (var week in _localCurriculum) {
-        final docRef = curriculumRef.doc();
-        batch.set(docRef, {
-          ...week,
-          'weekNumber': int.parse(week['week'].split(' ')[1]),
-          'createdAt': FieldValue.serverTimestamp(),
-        });
-      }
-      await batch.commit();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Curriculum migrated successfully')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Migration failed: $e')),
-      );
-    }
-  }
-
   // Delete a week from Firestore
   Future<void> _deleteWeek(String weekId) async {
     try {
       await _firestore.collection('curriculum').doc(weekId).delete();
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Week deleted successfully')),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error deleting week: $e')),
       );
@@ -109,98 +38,182 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Week'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: weekController,
-                decoration:
-                    const InputDecoration(labelText: 'Week (e.g. Week 1)'),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Color(0xFF794022),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(4),
+                ),
               ),
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+              child: const Text(
+                'Add New Week',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              TextField(
-                controller: descController,
-                decoration: const InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 16),
-              const Text('Topics:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              ...topicControllers.asMap().entries.map((entry) {
-                final index = entry.key;
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: entry.value,
-                        decoration: InputDecoration(
-                          labelText: 'Topic ${index + 1}',
-                        ),
+            ),
+            titlePadding: EdgeInsets.zero,
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: weekController,
+                    decoration: const InputDecoration(
+                      labelText: 'Week (e.g. Week 1)',
+                      hintText: 'Format: Week [number]',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
                       ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          topicControllers.removeAt(index);
-                        });
-                      },
+                  ),
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
+                      ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
                     ),
-                  ],
-                );
-              }).toList(),
+                  ),
+                  TextField(
+                    controller: descController,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
+                      ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Topics:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF794022),
+                      )),
+                  ...topicControllers.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: entry.value,
+                            decoration: InputDecoration(
+                              labelText: 'Topic ${index + 1}',
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFF794022)),
+                              ),
+                              labelStyle:
+                                  const TextStyle(color: Color(0xFF794022)),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle,
+                              color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              topicControllers.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    );
+                  }),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        topicControllers.add(TextEditingController());
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF794022),
+                    ),
+                    child: const Text('Add Topic'),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
               TextButton(
-                onPressed: () {
-                  setState(() {
-                    topicControllers.add(TextEditingController());
-                  });
+                onPressed: () => Navigator.pop(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.grey,
+                ),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (weekController.text.isEmpty ||
+                      titleController.text.isEmpty ||
+                      !weekController.text.toLowerCase().startsWith('week ')) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Valid Week (e.g. Week 1) and Title are required'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Validate week number
+                  final weekNumberStr = weekController.text.split(' ')[1];
+                  final weekNumber = int.tryParse(weekNumberStr);
+                  if (weekNumber == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Please enter a valid week number (e.g. Week 1)'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  try {
+                    await _firestore.collection('curriculum').add({
+                      'week': weekController.text,
+                      'title': titleController.text,
+                      'description': descController.text,
+                      'topics': topicControllers
+                          .where((c) => c.text.isNotEmpty)
+                          .map((c) => c.text)
+                          .toList(),
+                      'weekNumber': weekNumber,
+                      'createdAt': FieldValue.serverTimestamp(),
+                      'updatedAt': FieldValue.serverTimestamp(),
+                    });
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  } catch (e) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error adding week: $e')),
+                    );
+                  }
                 },
-                child: const Text('Add Topic'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF794022),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Add Week'),
               ),
             ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (weekController.text.isEmpty || titleController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Week and Title are required')),
-                );
-                return;
-              }
-              try {
-                await _firestore.collection('curriculum').add({
-                  'week': weekController.text,
-                  'title': titleController.text,
-                  'description': descController.text,
-                  'topics': topicControllers.map((c) => c.text).toList(),
-                  'weekNumber': int.parse(weekController.text.split(' ')[1]),
-                  'createdAt': FieldValue.serverTimestamp(),
-                });
-                Navigator.pop(context);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error adding week: $e')),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF794022),
-            ),
-            child: const Text('Add Week'),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -220,91 +233,184 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Week'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: weekController,
-                decoration: const InputDecoration(labelText: 'Week'),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Color(0xFF794022),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(4),
+                ),
               ),
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+              child: const Text(
+                'Edit Week',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              TextField(
-                controller: descController,
-                decoration: const InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-              ),
-              const SizedBox(height: 16),
-              const Text('Topics:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              ...topicControllers.asMap().entries.map((entry) {
-                final index = entry.key;
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: entry.value,
-                        decoration: InputDecoration(
-                          labelText: 'Topic ${index + 1}',
-                        ),
+            ),
+            titlePadding: EdgeInsets.zero,
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: weekController,
+                    decoration: const InputDecoration(
+                      labelText: 'Week',
+                      hintText: 'Format: Week [number]',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
                       ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          topicControllers.removeAt(index);
-                        });
-                      },
+                  ),
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Title',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
+                      ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
                     ),
-                  ],
-                );
-              }).toList(),
+                  ),
+                  TextField(
+                    controller: descController,
+                    decoration: const InputDecoration(
+                      labelText: 'Description',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xFF794022)),
+                      ),
+                      labelStyle: TextStyle(color: Color(0xFF794022)),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Topics:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF794022),
+                      )),
+                  ...topicControllers.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: entry.value,
+                            decoration: InputDecoration(
+                              labelText: 'Topic ${index + 1}',
+                              focusedBorder: const UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xFF794022)),
+                              ),
+                              labelStyle:
+                                  const TextStyle(color: Color(0xFF794022)),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle,
+                              color: Colors.red),
+                          onPressed: () {
+                            setState(() {
+                              topicControllers.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
+                    );
+                  }),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        topicControllers.add(TextEditingController());
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF794022),
+                    ),
+                    child: const Text('Add Topic'),
+                  ),
+                ],
+              ),
+            ),
+            actions: [
               TextButton(
-                onPressed: () {
-                  setState(() {
-                    topicControllers.add(TextEditingController());
-                  });
+                onPressed: () => Navigator.pop(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.grey,
+                ),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (weekController.text.isEmpty ||
+                      titleController.text.isEmpty ||
+                      !weekController.text.toLowerCase().startsWith('week ')) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Valid Week (e.g. Week 1) and Title are required'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Validate week number
+                  final weekNumberStr = weekController.text.split(' ')[1];
+                  final weekNumber = int.tryParse(weekNumberStr);
+                  if (weekNumber == null) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Please enter a valid week number (e.g. Week 1)'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  try {
+                    await _firestore
+                        .collection('curriculum')
+                        .doc(weekId)
+                        .update({
+                      'week': weekController.text,
+                      'title': titleController.text,
+                      'description': descController.text,
+                      'topics': topicControllers
+                          .where((c) => c.text.isNotEmpty)
+                          .map((c) => c.text)
+                          .toList(),
+                      'weekNumber': weekNumber,
+                      'updatedAt': FieldValue.serverTimestamp(),
+                    });
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  } catch (e) {
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error updating week: $e')),
+                    );
+                  }
                 },
-                child: const Text('Add Topic'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF794022),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Update'),
               ),
             ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                await _firestore.collection('curriculum').doc(weekId).update({
-                  'week': weekController.text,
-                  'title': titleController.text,
-                  'description': descController.text,
-                  'topics': topicControllers.map((c) => c.text).toList(),
-                  'weekNumber': int.parse(weekController.text.split(' ')[1]),
-                  'updatedAt': FieldValue.serverTimestamp(),
-                });
-                Navigator.pop(context);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error updating week: $e')),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF794022),
-            ),
-            child: const Text('Update'),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -313,17 +419,17 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Curriculum'),
+        title: const Text(
+          'Manage Curriculum',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF794022),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add, color: Colors.white),
             onPressed: _showAddWeekDialog,
-          ),
-          IconButton(
-            icon: const Icon(Icons.cloud_upload),
-            onPressed: _migrateCurriculum,
-            tooltip: 'Migrate Local Curriculum',
+            tooltip: 'Add New Week',
           ),
         ],
       ),
@@ -336,6 +442,13 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error loading curriculum: ${snapshot.error}'),
+            );
+          }
+
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
               child: Column(
@@ -344,23 +457,27 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
                   const Text('No curriculum weeks found'),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _migrateCurriculum,
+                    onPressed: _showAddWeekDialog,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF794022),
+                      foregroundColor: Colors.white,
                     ),
-                    child: const Text('Migrate Local Curriculum'),
+                    child: const Text('Add First Week'),
                   ),
                 ],
               ),
             );
           }
+
           return ListView.builder(
+            padding: const EdgeInsets.all(8),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final week = snapshot.data!.docs[index];
               final data = week.data() as Map<String, dynamic>;
               return Card(
-                margin: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 12),
+                elevation: 2,
                 child: ExpansionTile(
                   title: Text(
                     '${data['week']}: ${data['title']}',
@@ -375,26 +492,47 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(data['description'] ?? ''),
+                          Text(
+                            data['description'] ?? 'No description',
+                            style: const TextStyle(fontSize: 16),
+                          ),
                           const SizedBox(height: 16),
-                          const Text('Topics:',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text(
+                            'Topics:',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                           ...(data['topics'] as List<dynamic>).map((topic) {
                             return Padding(
                               padding:
                                   const EdgeInsets.only(left: 16.0, top: 4),
-                              child: Text('• $topic'),
+                              child: Text(
+                                '• $topic',
+                                style: const TextStyle(fontSize: 15),
+                              ),
                             );
-                          }).toList(),
+                          }),
                           const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              Text(
+                                'Last updated: ${_formatTimestamp(data['updatedAt'] ?? data['createdAt'])}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const Spacer(),
                               IconButton(
-                                icon:
-                                    const Icon(Icons.edit, color: Colors.blue),
+                                icon: const Icon(Icons.edit,
+                                    color: Color(0xFF794022)),
                                 onPressed: () =>
                                     _showEditWeekDialog(week.id, data),
+                                tooltip: 'Edit Week',
                               ),
                               IconButton(
                                 icon:
@@ -403,21 +541,43 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
                                   final confirmed = await showDialog<bool>(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: const Text('Confirm Delete'),
+                                      backgroundColor: Colors.white,
+                                      title: Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: const BoxDecoration(
+                                          color: Color(0xFF794022),
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(4),
+                                            topRight: Radius.circular(4),
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          'Confirm Delete',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      titlePadding: EdgeInsets.zero,
                                       content: const Text(
-                                          'Are you sure you want to delete this week?'),
+                                          'Are you sure you want to delete this week? This action cannot be undone.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context, false),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.grey,
+                                          ),
                                           child: const Text('Cancel'),
                                         ),
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.pop(context, true),
-                                          child: const Text('Delete',
-                                              style:
-                                                  TextStyle(color: Colors.red)),
+                                          child: const Text(
+                                            'Delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -426,6 +586,7 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
                                     await _deleteWeek(week.id);
                                   }
                                 },
+                                tooltip: 'Delete Week',
                               ),
                             ],
                           ),
@@ -440,5 +601,14 @@ class _AdminCurriculumScreenState extends State<AdminCurriculumScreen> {
         },
       ),
     );
+  }
+
+  String _formatTimestamp(dynamic timestamp) {
+    if (timestamp == null) return 'Unknown';
+    if (timestamp is Timestamp) {
+      final date = timestamp.toDate();
+      return '${date.day}/${date.month}/${date.year}';
+    }
+    return 'Unknown';
   }
 }

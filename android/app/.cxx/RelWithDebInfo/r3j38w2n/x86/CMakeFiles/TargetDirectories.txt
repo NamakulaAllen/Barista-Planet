@@ -1,0 +1,2 @@
+C:/Users/WITI/Desktop/barista_planet/android/app/.cxx/RelWithDebInfo/r3j38w2n/x86/CMakeFiles/edit_cache.dir
+C:/Users/WITI/Desktop/barista_planet/android/app/.cxx/RelWithDebInfo/r3j38w2n/x86/CMakeFiles/rebuild_cache.dir

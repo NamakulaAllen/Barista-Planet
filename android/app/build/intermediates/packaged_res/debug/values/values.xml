@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">285023635629</string>
+    <string name="google_api_key" translatable="false">AIzaSyApTx46KEbWd0w9IeVATkDbN7Z-OjDmABk</string>
+    <string name="google_app_id" translatable="false">1:285023635629:android:265295e8cf19288e3f9e24</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyApTx46KEbWd0w9IeVATkDbN7Z-OjDmABk</string>
+    <string name="google_storage_bucket" translatable="false">barista-planet-658c1.firebasestorage.app</string>
+    <string name="project_id" translatable="false">barista-planet-658c1</string>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

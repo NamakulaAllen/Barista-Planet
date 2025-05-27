@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class DrinkDetailsScreen extends StatelessWidget {
@@ -9,104 +10,217 @@ class DrinkDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(drink['name'] ?? 'Drink Details',
-            style: TextStyle(color: Colors.white)),
-        backgroundColor: Color(0xFF794022), // Brown app bar background
+        title: Text(
+          drink['name'] ?? 'Unknown Drink',
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color(0xFF794022),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // White arrow icon
-          onPressed: () {
-            Navigator.pop(context); // Navigate back when the arrow is tapped
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Tap image to view in full screen
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => Dialog(
-                      backgroundColor: Colors.transparent,
-                      child: GestureDetector(
-                        onTap: () =>
-                            Navigator.pop(context), // Close when tapped
-                        child: InteractiveViewer(
-                          panEnabled: true, // Allow zooming & panning
-                          child: Image.asset(
-                            drink['image'] ?? 'assets/images/default.jpg',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: Image.asset(
-                  drink['image'] ?? 'assets/images/default.jpg',
-                  width: double.infinity,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(height: 10),
+              _buildImagePreview(context),
+              const SizedBox(height: 10),
               Center(
                 child: TextButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        backgroundColor: Colors.transparent,
-                        child: GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: InteractiveViewer(
-                            panEnabled: true,
-                            child: Image.asset(
-                              drink['image'] ?? 'assets/images/default.jpg',
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                    _showFullScreenImage(context, drink['image']);
                   },
-                  child: Text(
+                  child: const Text(
                     "See Full Image",
                     style: TextStyle(color: Colors.blue, fontSize: 16),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 20),
+
+              // Name
+              Text(
+                'Name:',
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                drink['name'] ?? 'Unknown Drink',
+                style: const TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Ingredients
               Text(
                 'Ingredients:',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black), // Black text for Ingredients
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              ...?drink['ingredients']?.entries.map(
-                    (entry) => Text('${entry.key}: ${entry.value}',
-                        style: TextStyle(color: Colors.black)),
-                  ),
-              SizedBox(height: 10),
+              const SizedBox(height: 8),
+              ..._getIngredientList(),
+              const SizedBox(height: 20),
+
+              // Preparation
               Text(
                 'Preparation:',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black), // Black text for Preparation
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Text(drink['preparation'] ?? 'No preparation details available.',
-                  style: TextStyle(color: Colors.black)),
+              Text(
+                drink['preparation'] ?? 'No preparation instructions.',
+                style: const TextStyle(fontSize: 16),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildImagePreview(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showFullScreenImage(context, drink['image']);
+      },
+      child: Hero(
+        tag: drink['name'] ?? 'default_drink_image',
+        child: Container(
+          width: double.infinity,
+          height: 250,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: drink['image'] != null
+              ? Image.network(drink['image'], fit: BoxFit.cover)
+              : const Center(child: Icon(Icons.fastfood, size: 100)),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _getIngredientList() {
+    // Handle both List and Map cases for backward compatibility
+    if (drink['ingredients'] == null) {
+      return [
+        const Text('No ingredients listed.',
+            style: TextStyle(color: Colors.grey)),
+      ];
+    }
+
+    if (drink['ingredients'] is List) {
+      // Handle List case (new format)
+      final ingredients = drink['ingredients'] as List;
+      return ingredients.map((ingredient) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.coffee,
+                color: Color(0xFF794022),
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                ingredient.toString(),
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        );
+      }).toList();
+    } else if (drink['ingredients'] is Map) {
+      // Handle Map case (old format if any)
+      final ingredients = drink['ingredients'] as Map;
+      return ingredients.entries.map((entry) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.coffee,
+                color: Color(0xFF794022),
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '${entry.key}: ${entry.value}',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        );
+      }).toList();
+    } else {
+      // Handle single string case
+      return [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.coffee,
+                color: Color(0xFF794022),
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                drink['ingredients'].toString(),
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        )
+      ];
+    }
+  }
+
+  void _showFullScreenImage(BuildContext context, String? imageUrl) {
+    if (imageUrl == null || imageUrl.isEmpty) return;
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Dismiss",
+      barrierColor: Colors.black.withOpacity(0.4),
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+              InteractiveViewer(
+                panEnabled: true,
+                boundaryMargin: const EdgeInsets.all(20),
+                minScale: 0.5,
+                maxScale: 4,
+                child: Hero(
+                  tag: 'fullscreen_${drink['name']}',
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

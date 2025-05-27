@@ -1,173 +1,123 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CurriculumPage extends StatelessWidget {
-  const CurriculumPage({super.key});
+class CurriculumScreen extends StatelessWidget {
+  const CurriculumScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'COURSE CURRICULUM',
+          "Course Curriculum",
           style: TextStyle(
-            fontSize: 18, // Adjusted font size for title
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.white, // Make title white
+            fontWeight: FontWeight.bold, // Make title bold
           ),
         ),
-        backgroundColor: Color(0xFF794022),
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        backgroundColor: const Color(0xFF794022),
+        centerTitle: true, // Center the title
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,
+              color: Colors.white), // Make back arrow white
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Welcome to the Barista Planet Coffee Institute Course!',
-                    style: TextStyle(
-                      fontSize: 18, // Adjusted font size for title
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF794022),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('curriculum')
+            .orderBy('weekNumber')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("No curriculum found."),
+            );
+          }
+          final weeks = snapshot.data!.docs;
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Welcome Message
+                const Text(
+                  "Welcome to the Barista Planet Coffee Institute Course!",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF794022),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "This course will take you on a 4-week journey to master coffee skills and business management.",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const Divider(),
+                ...weeks.map((weekDoc) {
+                  final data = weekDoc.data() as Map<String, dynamic>;
+                  final topics = List<String>.from(data['topics'] ?? []);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Week Title
+                            Text(
+                              "${data['week']}: ${data['title']}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF794022),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            // Description
+                            Text(
+                              data['description'] ?? '',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(height: 16),
+                            // Key Topics
+                            const Text(
+                              "Key Topics:",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF794022),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            ...topics.map((topic) {
+                              return ListTile(
+                                leading: const Icon(
+                                  Icons.check_circle,
+                                  color: Color(0xFF794022),
+                                ),
+                                title: Text(topic),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'This course will take you on a 4-week journey to master coffee skills and business management.',
-                    style: TextStyle(fontSize: 15), // Font size for description
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            CurriculumCard(
-              week: "Week 1",
-              title: "History of Coffee",
-              description:
-                  "Learn the rich history and origin of coffee, its journey around the world, and its significance in various cultures.",
-              topics: [
-                "Origin and Spread of Coffee",
-                "Cultural Impact of Coffee",
-                "Evolution of Coffee Brewing",
+                  );
+                }),
               ],
-              color: Color(0xFF794022),
             ),
-            CurriculumCard(
-              week: "Week 2",
-              title: "Managing a Coffee Business",
-              description:
-                  "Understand the essentials of managing a coffee shop, from inventory to customer relations and business strategy.",
-              topics: [
-                "Coffee Shop Setup",
-                "Inventory Management",
-                "Customer Service",
-                "Business Strategy",
-              ],
-              color: Color(0xFF794022),
-            ),
-            CurriculumCard(
-              week: "Week 3",
-              title: "Coffee Brewing Techniques",
-              description:
-                  "Master the preparation of various coffee types including espresso, latte, cappuccino, and more.",
-              topics: [
-                "Espresso Making",
-                "Latte Art",
-                "Cappuccino and More",
-              ],
-              color: Color(0xFF794022),
-            ),
-            CurriculumCard(
-              week: "Week 4",
-              title: "Cold Coffees, Mojitos, Juices, and Milkshakes",
-              description:
-                  "Learn to prepare a variety of cold beverages including iced coffee, mojitos, fresh juices, and milkshakes.",
-              topics: [
-                "Iced Coffee Brewing",
-                "Mojito Preparation",
-                "Juicing Techniques",
-                "Milkshake Mastery",
-              ],
-              color: Color(0xFF794022),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CurriculumCard extends StatelessWidget {
-  final String week;
-  final String title;
-  final String description;
-  final List<String> topics;
-  final Color color;
-
-  const CurriculumCard({
-    super.key,
-    required this.week,
-    required this.title,
-    required this.description,
-    required this.topics,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-      color: Colors.white,
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '$week - $title',
-              style: TextStyle(
-                fontSize: 18, // Adjusted font size for title
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 15), // Font size for description
-            ),
-            const SizedBox(height: 10),
-            const Divider(),
-            Text(
-              'Key Topics:',
-              style: TextStyle(
-                fontSize: 18, // Adjusted font size for title
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-            const SizedBox(height: 10),
-            for (var topic in topics)
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  Icons.check_circle,
-                  color: color,
-                ),
-                title: Text(
-                  topic,
-                  style: const TextStyle(fontSize: 15), // Font size for topics
-                ),
-              ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

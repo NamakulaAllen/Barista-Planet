@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'drink_details_screen.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryDrinksScreen extends StatelessWidget {
   final String category;
   final List<Map<String, dynamic>> drinks;
 
-  const CategoryScreen(
-      {super.key, required this.category, required this.drinks});
+  const CategoryDrinksScreen({
+    super.key,
+    required this.category,
+    required this.drinks,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,62 +17,59 @@ class CategoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           category,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: Color(0xFF794022),
+        backgroundColor: const Color(0xFF794022),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ListView.builder(
-        itemCount: drinks.length,
-        itemBuilder: (context, drinkIndex) {
-          var drink = drinks[drinkIndex];
-
-          return Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DrinkDetailsScreen(
-                      drink: drink,
+      body: drinks.isEmpty
+          ? const Center(child: Text("No drinks found in this category"))
+          : ListView.builder(
+              itemCount: drinks.length,
+              itemBuilder: (context, index) {
+                final drink = drinks[index];
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
+                  child: Card(
+                    elevation: 3,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Color(0xFF794022).withOpacity(0.1),
+                        child: const Icon(
+                          Icons.local_drink,
+                          color: Color(0xFF794022),
+                        ),
+                      ),
+                      title: Text(drink['name'] ?? 'Unknown Drink'),
+                      subtitle: Text(drink['preparation'] ?? ''),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Color(0xFF794022),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DrinkDetailsScreen(drink: drink),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );
               },
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        drink['name'],
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF794022),
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Color(0xFF794022).withOpacity(0.6),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
-          );
-        },
-      ),
     );
   }
 }

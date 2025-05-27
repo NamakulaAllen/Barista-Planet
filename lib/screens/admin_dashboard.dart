@@ -271,7 +271,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           color: Colors.green.shade800,
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CurriculumPage()),
+            MaterialPageRoute(builder: (context) => CurriculumScreen()),
           ),
         ),
         _adminFeatureButton(

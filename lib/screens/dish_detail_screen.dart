@@ -1,220 +1,186 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'add_edit_dish_screen.dart';
 
-class DishDetailScreen extends StatefulWidget {
+class DishDetailScreen extends StatelessWidget {
   final Map<String, dynamic> dish;
-  final bool isAdmin;
 
-  const DishDetailScreen({
-    super.key,
-    required this.dish,
-    this.isAdmin = false,
-  });
-
-  @override
-  State<DishDetailScreen> createState() => _DishDetailScreenState();
-}
-
-class _DishDetailScreenState extends State<DishDetailScreen> {
-  bool _showFullImage = false;
+  const DishDetailScreen(
+      {super.key, required this.dish, required bool isAdmin});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.dish['name'] ?? 'Unknown Dish',
+          dish['name'] ?? 'Unknown Dish',
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF794022),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (_showFullImage) {
-              setState(() {
-                _showFullImage = false;
-              });
-            } else {
-              Navigator.pop(context);
-            }
-          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          if (widget.isAdmin)
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: _editDish,
-            ),
-          if (widget.isAdmin)
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: _confirmDelete,
-            ),
-        ],
       ),
-      body: _showFullImage ? _buildFullImageView() : _buildDetailView(),
-    );
-  }
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image preview with tap to zoom
+              _buildImagePreview(context),
 
-  Widget _buildDetailView() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _showFullImage = true;
-              });
-            },
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Image.asset(
-                  widget.dish['image'] ?? 'assets/images/default.jpg',
-                  width: double.infinity,
-                  height: 250,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 250,
-                      color: Colors.grey[200],
-                      child: const Center(
-                        child: Icon(Icons.fastfood, size: 100),
-                      ),
-                    );
+              const SizedBox(height: 10),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    _showFullScreenImageWithBlur(context, dish['image']);
                   },
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Tap to view full image',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  child: const Text(
+                    "See Full Image",
+                    style: TextStyle(color: Colors.blue, fontSize: 16),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Dish Name
+              Text(
+                'Name:',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                dish['name'] ?? 'Unknown Dish',
+                style: const TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Description
+              Text(
+                'Description:',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                dish['description'] ?? 'No description available.',
+                style: const TextStyle(fontSize: 16),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Drinks Served
+              Text(
+                'Drinks Served:',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              ..._getDrinkList(),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.dish['name'] ?? 'Unknown Dish',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  widget.dish['description'] ?? 'No description available',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Drinks Served:',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Column(
-                  children: (widget.dish['drinks'] as List<dynamic>? ?? [])
-                      .map((drink) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.coffee,
-                            color: Color(0xFF794022),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            drink.toString(),
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildFullImageView() {
+  List<Widget> _getDrinkList() {
+    final drinks = dish['drinks'] as List<dynamic>?;
+
+    if (drinks == null || drinks.isEmpty) {
+      return [
+        const Text('No drinks served.', style: TextStyle(color: Colors.grey)),
+      ];
+    }
+
+    return drinks.map((drink) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.coffee,
+              color: Color(0xFF794022),
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              drink.toString(),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      );
+    }).toList();
+  }
+
+  Widget _buildImagePreview(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _showFullImage = false;
-        });
+        _showFullScreenImageWithBlur(context, dish['image']);
       },
-      child: Container(
-        color: Colors.black,
-        child: Center(
-          child: InteractiveViewer(
-            panEnabled: true,
-            boundaryMargin: const EdgeInsets.all(20),
-            minScale: 0.5,
-            maxScale: 4,
-            child: Image.asset(
-              widget.dish['image'] ?? 'assets/images/default.jpg',
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return const Icon(Icons.fastfood,
-                    size: 100, color: Colors.white);
-              },
-            ),
+      child: Hero(
+        tag: dish['name'] ?? 'default_dish_image',
+        child: Container(
+          width: double.infinity,
+          height: 250,
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(8),
           ),
+          child: dish['image'] != null
+              ? Image.network(dish['image'], fit: BoxFit.cover)
+              : const Center(child: Icon(Icons.fastfood, size: 100)),
         ),
       ),
     );
   }
 
-  void _editDish() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddEditDishScreen(
-          dish: widget.dish,
-        ),
-      ),
-    );
-  }
+  void _showFullScreenImageWithBlur(BuildContext context, String? imageUrl) {
+    if (imageUrl == null || imageUrl.isEmpty) return;
 
-  void _confirmDelete() {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirm Delete'),
-        content: const Text('Are you sure you want to delete this dish?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Simulate deleting the dish locally
-              print("Dish Deleted: ${widget.dish['name']}");
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Go back to previous screen
-            },
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
+      barrierDismissible: true, // 👈 Allow tapping outside to dismiss
+      barrierLabel: "Dismiss",
+      barrierColor:
+          Colors.black.withOpacity(0.6), // Semi-transparent background
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+            InteractiveViewer(
+              panEnabled: true,
+              minScale: 0.5,
+              maxScale: 4,
+              child: Hero(
+                tag: 'fullscreen_${dish['name']}',
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

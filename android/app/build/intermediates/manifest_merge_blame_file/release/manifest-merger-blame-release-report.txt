@@ -1,0 +1,607 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.instute_planet"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="23"
+9        android:targetSdkVersion="35" />
+10    <!--
+11         Required to query activities that can process text, see:
+12         https://developer.android.com/training/package-visibility and
+13         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+14
+15         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+16    -->
+17    <queries>
+17-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:40:5-45:15
+18        <intent>
+18-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:41:9-44:18
+19            <action android:name="android.intent.action.PROCESS_TEXT" />
+19-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:42:13-72
+19-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:42:21-70
+20
+21            <data android:mimeType="text/plain" />
+21-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+21-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:19-48
+22        </intent>
+23        <intent>
+23-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:11:9-17:18
+24            <action android:name="android.intent.action.VIEW" />
+24-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:17-69
+24-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:25-66
+25
+26            <data
+26-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+27                android:mimeType="*/*"
+27-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:19-48
+28                android:scheme="*" />
+29        </intent>
+30        <intent>
+30-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:18:9-27:18
+31            <action android:name="android.intent.action.VIEW" />
+31-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:17-69
+31-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:25-66
+32
+33            <category android:name="android.intent.category.BROWSABLE" />
+33-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:17-78
+33-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:27-75
+34
+35            <data
+35-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+36                android:host="pay"
+37                android:mimeType="*/*"
+37-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:19-48
+38                android:scheme="upi" />
+39        </intent>
+40        <intent>
+40-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:28:9-30:18
+41            <action android:name="android.intent.action.MAIN" />
+41-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:17-68
+41-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:25-66
+42        </intent>
+43        <intent>
+43-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:31:9-35:18
+44            <action android:name="android.intent.action.SEND" />
+44-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:32:13-65
+44-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:32:21-62
+45
+46            <data android:mimeType="*/*" />
+46-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+46-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:19-48
+47        </intent>
+48        <intent>
+48-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:36:9-38:18
+49            <action android:name="rzp.device_token.share" />
+49-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:37:13-61
+49-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:37:21-58
+50        </intent>
+51    </queries>
+52    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+53    <!-- <uses-sdk android:minSdkVersion="21" /> -->
+54    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+54-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:10:5-79
+54-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:10:22-76
+55    <uses-permission android:name="android.permission.INTERNET" />
+55-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:11:5-67
+55-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:11:22-64
+56    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+56-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\WITI\.gradle\caches\transforms-3\1299dacbfff21ead5f60b74122bc2e7a\transformed\jetified-recaptcha-18.6.1\AndroidManifest.xml:9:5-98
+56-->[com.google.android.recaptcha:recaptcha:18.6.1] C:\Users\WITI\.gradle\caches\transforms-3\1299dacbfff21ead5f60b74122bc2e7a\transformed\jetified-recaptcha-18.6.1\AndroidManifest.xml:9:22-95
+57
+58    <uses-feature
+58-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:26:5-28:35
+59        android:glEsVersion="0x00020000"
+59-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:27:9-41
+60        android:required="true" />
+60-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:28:9-32
+61
+62    <permission
+62-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+63        android:name="com.example.instute_planet.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+63-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+64        android:protectionLevel="signature" />
+64-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+65
+66    <uses-permission android:name="com.example.instute_planet.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+66-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+66-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+67
+68    <application
+69        android:name="android.app.Application"
+69-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:5:9-42
+70        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+70-->[androidx.core:core:1.13.1] C:\Users\WITI\.gradle\caches\transforms-3\cdc3a213e8d186a1ac05c4305a51b7cb\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+71        android:extractNativeLibs="false"
+72        android:icon="@mipmap/ic_launcher"
+72-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:6:9-43
+73        android:label="barista_planet" >
+73-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:4:9-39
+74        <activity
+74-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:7:9-28:20
+75            android:name="com.example.instute_planet.MainActivity"
+75-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:8:13-41
+76            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+76-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:13:13-163
+77            android:exported="true"
+77-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:9:13-36
+78            android:hardwareAccelerated="true"
+78-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:14:13-47
+79            android:launchMode="singleTop"
+79-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:10:13-43
+80            android:taskAffinity=""
+80-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:11:13-36
+81            android:theme="@style/LaunchTheme"
+81-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:12:13-47
+82            android:windowSoftInputMode="adjustResize" >
+82-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:15:13-55
+83
+84            <!--
+85                 Specifies an Android theme to apply to this Activity as soon as
+86                 the Android process has started. This theme is visible to the user
+87                 while the Flutter UI initializes. After that, this theme continues
+88                 to determine the Window background behind the Flutter UI.
+89            -->
+90            <meta-data
+90-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:20:13-23:17
+91                android:name="io.flutter.embedding.android.NormalTheme"
+91-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:21:15-70
+92                android:resource="@style/NormalTheme" />
+92-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:22:15-52
+93
+94            <intent-filter>
+94-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:24:13-27:29
+95                <action android:name="android.intent.action.MAIN" />
+95-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:17-68
+95-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:25-66
+96
+97                <category android:name="android.intent.category.LAUNCHER" />
+97-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:26:17-76
+97-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:26:27-74
+98            </intent-filter>
+99        </activity>
+100        <!--
+101             Don't delete the meta-data below.
+102             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+103        -->
+104        <meta-data
+104-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:31:9-33:33
+105            android:name="flutterEmbedding"
+105-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:32:13-44
+106            android:value="2" />
+106-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:33:13-30
+107
+108        <service
+108-->[:cloud_firestore] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.8\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:8:9-12:19
+109            android:name="com.google.firebase.components.ComponentDiscoveryService"
+109-->[:cloud_firestore] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.8\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:8:18-89
+110            android:directBootAware="true"
+110-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:32:13-43
+111            android:exported="false" >
+111-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:16:13-37
+112            <meta-data
+112-->[:cloud_firestore] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.8\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-11:85
+113                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+113-->[:cloud_firestore] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.8\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:17-134
+114                android:value="com.google.firebase.components.ComponentRegistrar" />
+114-->[:cloud_firestore] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-5.6.8\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:17-82
+115            <meta-data
+115-->[:firebase_auth] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.5.4\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-11:85
+116                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
+116-->[:firebase_auth] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.5.4\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:17-124
+117                android:value="com.google.firebase.components.ComponentRegistrar" />
+117-->[:firebase_auth] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-5.5.4\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:17-82
+118            <meta-data
+118-->[:firebase_storage] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-12.4.6\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-11:85
+119                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
+119-->[:firebase_storage] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-12.4.6\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:17-126
+120                android:value="com.google.firebase.components.ComponentRegistrar" />
+120-->[:firebase_storage] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_storage-12.4.6\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:17-82
+121            <meta-data
+121-->[:firebase_core] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.13.1\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-11:85
+122                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+122-->[:firebase_core] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.13.1\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:17-124
+123                android:value="com.google.firebase.components.ComponentRegistrar" />
+123-->[:firebase_core] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-3.13.1\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:17-82
+124            <meta-data
+124-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:17:13-19:85
+125                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+125-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:18:17-122
+126                android:value="com.google.firebase.components.ComponentRegistrar" />
+126-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:19:17-82
+127            <meta-data
+127-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:20:13-22:85
+128                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+128-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:21:17-111
+129                android:value="com.google.firebase.components.ComponentRegistrar" />
+129-->[com.google.firebase:firebase-firestore:25.1.3] C:\Users\WITI\.gradle\caches\transforms-3\95aed5837eedadad914f75f167bfc9cd\transformed\jetified-firebase-firestore-25.1.3\AndroidManifest.xml:22:17-82
+130            <meta-data
+130-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:69:13-71:85
+131                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+131-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:70:17-109
+132                android:value="com.google.firebase.components.ComponentRegistrar" />
+132-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:71:17-82
+133            <meta-data
+133-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:30:13-32:85
+134                android:name="com.google.firebase.components:com.google.firebase.storage.FirebaseStorageKtxRegistrar"
+134-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:31:17-118
+135                android:value="com.google.firebase.components.ComponentRegistrar" />
+135-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:32:17-82
+136            <meta-data
+136-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:33:13-35:85
+137                android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
+137-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:34:17-107
+138                android:value="com.google.firebase.components.ComponentRegistrar" />
+138-->[com.google.firebase:firebase-storage:21.0.1] C:\Users\WITI\.gradle\caches\transforms-3\dcfed2182a4bb9128e8360177bf8c5c4\transformed\jetified-firebase-storage-21.0.1\AndroidManifest.xml:35:17-82
+139            <meta-data
+139-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:25:13-27:85
+140                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckKtxRegistrar"
+140-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:26:17-120
+141                android:value="com.google.firebase.components.ComponentRegistrar" />
+141-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:27:17-82
+142            <meta-data
+142-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:28:13-30:85
+143                android:name="com.google.firebase.components:com.google.firebase.appcheck.FirebaseAppCheckRegistrar"
+143-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:29:17-117
+144                android:value="com.google.firebase.components.ComponentRegistrar" />
+144-->[com.google.firebase:firebase-appcheck:18.0.0] C:\Users\WITI\.gradle\caches\transforms-3\522b62694d845edfc909d42a23eef938\transformed\jetified-firebase-appcheck-18.0.0\AndroidManifest.xml:30:17-82
+145            <meta-data
+145-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\373a79937713db986e5e37b40f2cd060\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+146                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+146-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\373a79937713db986e5e37b40f2cd060\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+147                android:value="com.google.firebase.components.ComponentRegistrar" />
+147-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\373a79937713db986e5e37b40f2cd060\transformed\jetified-firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+148            <meta-data
+148-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+149                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+149-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+150                android:value="com.google.firebase.components.ComponentRegistrar" />
+150-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+151        </service>
+152
+153        <activity
+153-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:29:9-46:20
+154            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+154-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:30:13-80
+155            android:excludeFromRecents="true"
+155-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:31:13-46
+156            android:exported="true"
+156-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:32:13-36
+157            android:launchMode="singleTask"
+157-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:33:13-44
+158            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+158-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:34:13-72
+159            <intent-filter>
+159-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:35:13-45:29
+160                <action android:name="android.intent.action.VIEW" />
+160-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:17-69
+160-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:25-66
+161
+162                <category android:name="android.intent.category.DEFAULT" />
+162-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:38:17-76
+162-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:38:27-73
+163                <category android:name="android.intent.category.BROWSABLE" />
+163-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:17-78
+163-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:27-75
+164
+165                <data
+165-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+166                    android:host="firebase.auth"
+167                    android:path="/"
+168                    android:scheme="genericidp" />
+169            </intent-filter>
+170        </activity>
+171        <activity
+171-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:47:9-64:20
+172            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+172-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:48:13-79
+173            android:excludeFromRecents="true"
+173-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:49:13-46
+174            android:exported="true"
+174-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:50:13-36
+175            android:launchMode="singleTask"
+175-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:51:13-44
+176            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+176-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:52:13-72
+177            <intent-filter>
+177-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:53:13-63:29
+178                <action android:name="android.intent.action.VIEW" />
+178-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:17-69
+178-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:36:25-66
+179
+180                <category android:name="android.intent.category.DEFAULT" />
+180-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:38:17-76
+180-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:38:27-73
+181                <category android:name="android.intent.category.BROWSABLE" />
+181-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:17-78
+181-->[com.google.firebase:firebase-auth:23.2.0] C:\Users\WITI\.gradle\caches\transforms-3\547addee97424d5a8a1fcfd6641321d6\transformed\jetified-firebase-auth-23.2.0\AndroidManifest.xml:39:27-75
+182
+183                <data
+183-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:43:13-50
+184                    android:host="firebase.auth"
+185                    android:path="/"
+186                    android:scheme="recaptcha" />
+187            </intent-filter>
+188        </activity>
+189
+190        <provider
+190-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:9-17:20
+191            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+191-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:13-82
+192            android:authorities="com.example.instute_planet.flutter.image_provider"
+192-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-74
+193            android:exported="false"
+193-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:12:13-37
+194            android:grantUriPermissions="true" >
+194-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:13:13-47
+195            <meta-data
+195-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:14:13-16:75
+196                android:name="android.support.FILE_PROVIDER_PATHS"
+196-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:15:17-67
+197                android:resource="@xml/flutter_image_picker_file_paths" />
+197-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:16:17-72
+198        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+199        <service
+199-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:19:9-31:19
+200            android:name="com.google.android.gms.metadata.ModuleDependencies"
+200-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:20:13-78
+201            android:enabled="false"
+201-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:21:13-36
+202            android:exported="false" >
+202-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:22:13-37
+203            <intent-filter>
+203-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:24:13-26:29
+204                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+204-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:25:17-94
+204-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:25:25-91
+205            </intent-filter>
+206
+207            <meta-data
+207-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:28:13-30:36
+208                android:name="photopicker_activity:0:required"
+208-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:29:17-63
+209                android:value="" />
+209-->[:image_picker_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\image_picker_android-0.8.12+23\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:30:17-33
+210        </service>
+211
+212        <activity
+212-->[:url_launcher_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\url_launcher_android-6.3.16\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:8:9-11:74
+213            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+213-->[:url_launcher_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\url_launcher_android-6.3.16\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:9:13-74
+214            android:exported="false"
+214-->[:url_launcher_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\url_launcher_android-6.3.16\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:10:13-37
+215            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+215-->[:url_launcher_android] C:\Users\WITI\AppData\Local\Pub\Cache\hosted\pub.dev\url_launcher_android-6.3.16\android\build\intermediates\merged_manifest\release\AndroidManifest.xml:11:13-71
+216
+217        <provider
+217-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+218            android:name="com.google.firebase.provider.FirebaseInitProvider"
+218-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+219            android:authorities="com.example.instute_planet.firebaseinitprovider"
+219-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+220            android:directBootAware="true"
+220-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+221            android:exported="false"
+221-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+222            android:initOrder="100" />
+222-->[com.google.firebase:firebase-common:21.0.0] C:\Users\WITI\.gradle\caches\transforms-3\5f19fe2115af9431d54214b04f89fb44\transformed\jetified-firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+223
+224        <service
+224-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:24:9-32:19
+225            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+225-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:25:13-94
+226            android:enabled="true"
+226-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:26:13-35
+227            android:exported="false" >
+227-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:27:13-37
+228            <meta-data
+228-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:29:13-31:104
+229                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+229-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:30:17-76
+230                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+230-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:31:17-101
+231        </service>
+232
+233        <activity
+233-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:34:9-41:20
+234            android:name="androidx.credentials.playservices.HiddenActivity"
+234-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:35:13-76
+235            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+235-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:36:13-87
+236            android:enabled="true"
+236-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:37:13-35
+237            android:exported="false"
+237-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:38:13-37
+238            android:fitsSystemWindows="true"
+238-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:39:13-45
+239            android:theme="@style/Theme.Hidden" >
+239-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\WITI\.gradle\caches\transforms-3\b6b8f405d6b6a5f7e9128edaa38cf75c\transformed\jetified-credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:40:13-48
+240        </activity>
+241
+242        <receiver
+242-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:42:9-49:20
+243            android:name="com.razorpay.RzpTokenReceiver"
+243-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:43:13-57
+244            android:exported="true" >
+244-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:44:13-36
+245            <intent-filter>
+245-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:46:13-48:29
+246                <action android:name="rzp.device_token.share" />
+246-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:37:13-61
+246-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:37:21-58
+247            </intent-filter>
+248        </receiver>
+249
+250        <activity
+250-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:51:9-59:20
+251            android:name="com.razorpay.CheckoutActivity"
+251-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:52:13-57
+252            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+252-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:53:13-83
+253            android:exported="false"
+253-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:54:13-37
+254            android:theme="@style/CheckoutTheme" >
+254-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:55:13-49
+255            <intent-filter>
+255-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:56:13-58:29
+256                <action android:name="android.intent.action.MAIN" />
+256-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:17-68
+256-->C:\Users\WITI\Desktop\barista_planet\android\app\src\main\AndroidManifest.xml:25:25-66
+257            </intent-filter>
+258        </activity>
+259
+260        <provider
+260-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:61:9-69:20
+261            android:name="androidx.startup.InitializationProvider"
+261-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:62:13-67
+262            android:authorities="com.example.instute_planet.androidx-startup"
+262-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:63:13-68
+263            android:exported="false" >
+263-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:64:13-37
+264            <meta-data
+264-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:66:13-68:52
+265                android:name="com.razorpay.RazorpayInitializer"
+265-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:67:17-64
+266                android:value="androidx.startup" />
+266-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:68:17-49
+267            <meta-data
+267-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\WITI\.gradle\caches\transforms-3\32af19eb00922d4ebc7c1c1ee8143bdb\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+268                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+268-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\WITI\.gradle\caches\transforms-3\32af19eb00922d4ebc7c1c1ee8143bdb\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+269                android:value="androidx.startup" />
+269-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\WITI\.gradle\caches\transforms-3\32af19eb00922d4ebc7c1c1ee8143bdb\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+270            <meta-data
+270-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+271                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+271-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+272                android:value="androidx.startup" />
+272-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+273        </provider>
+274
+275        <activity
+275-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:71:9-74:75
+276            android:name="com.razorpay.MagicXActivity"
+276-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:72:13-55
+277            android:exported="false"
+277-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:73:13-37
+278            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+278-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:74:13-72
+279
+280        <meta-data
+280-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:76:9-78:58
+281            android:name="com.razorpay.plugin.googlepay_all"
+281-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:77:13-61
+282            android:value="com.razorpay.RzpGpayMerged" />
+282-->[com.razorpay:standard-core:1.6.49] C:\Users\WITI\.gradle\caches\transforms-3\9d4c23b5af8b940113d276166cb58f58\transformed\jetified-standard-core-1.6.49\AndroidManifest.xml:78:13-55
+283
+284        <activity
+284-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:23:9-27:75
+285            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+285-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:24:13-93
+286            android:excludeFromRecents="true"
+286-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:25:13-46
+287            android:exported="false"
+287-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:26:13-37
+288            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+288-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:27:13-72
+289        <!--
+290            Service handling Google Sign-In user revocation. For apps that do not integrate with
+291            Google Sign-In, this service will never be started.
+292        -->
+293        <service
+293-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:33:9-37:51
+294            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+294-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:34:13-89
+295            android:exported="true"
+295-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:35:13-36
+296            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+296-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:36:13-107
+297            android:visibleToInstantApps="true" />
+297-->[com.google.android.gms:play-services-auth:21.1.0] C:\Users\WITI\.gradle\caches\transforms-3\d9623dafea021b7c252134b38af5be86\transformed\jetified-play-services-auth-21.1.0\AndroidManifest.xml:37:13-48
+298
+299        <uses-library
+299-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:23:9-25:40
+300            android:name="androidx.window.extensions"
+300-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:24:13-54
+301            android:required="false" />
+301-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:25:13-37
+302        <uses-library
+302-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:26:9-28:40
+303            android:name="androidx.window.sidecar"
+303-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:27:13-51
+304            android:required="false" /> <!-- Needs to be explicitly declared on P+ -->
+304-->[androidx.window:window:1.2.0] C:\Users\WITI\.gradle\caches\transforms-3\6d10f0b84dbb02c558738d8727400086\transformed\jetified-window-1.2.0\AndroidManifest.xml:28:13-37
+305        <uses-library
+305-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+306            android:name="org.apache.http.legacy"
+306-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+307            android:required="false" />
+307-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\WITI\.gradle\caches\transforms-3\4db118d914da4070399f638113ab2cf7\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+308
+309        <activity
+309-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\WITI\.gradle\caches\transforms-3\1b26912587b4e166b27befe65b44286f\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:9-22:45
+310            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+310-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\WITI\.gradle\caches\transforms-3\1b26912587b4e166b27befe65b44286f\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:20:19-85
+311            android:exported="false"
+311-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\WITI\.gradle\caches\transforms-3\1b26912587b4e166b27befe65b44286f\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:22:19-43
+312            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+312-->[com.google.android.gms:play-services-base:18.3.0] C:\Users\WITI\.gradle\caches\transforms-3\1b26912587b4e166b27befe65b44286f\transformed\jetified-play-services-base-18.3.0\AndroidManifest.xml:21:19-78
+313
+314        <meta-data
+314-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\WITI\.gradle\caches\transforms-3\ede33d1ea3dc81ab391bf119648994a9\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+315            android:name="com.google.android.gms.version"
+315-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\WITI\.gradle\caches\transforms-3\ede33d1ea3dc81ab391bf119648994a9\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+316            android:value="@integer/google_play_services_version" />
+316-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\WITI\.gradle\caches\transforms-3\ede33d1ea3dc81ab391bf119648994a9\transformed\jetified-play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+317
+318        <receiver
+318-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+319            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+319-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+320            android:directBootAware="false"
+320-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+321            android:enabled="true"
+321-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+322            android:exported="true"
+322-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+323            android:permission="android.permission.DUMP" >
+323-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+324            <intent-filter>
+324-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+325                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+325-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+325-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+326            </intent-filter>
+327            <intent-filter>
+327-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+328                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+328-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+328-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+329            </intent-filter>
+330            <intent-filter>
+330-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+331                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+331-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+331-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+332            </intent-filter>
+333            <intent-filter>
+333-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+334                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+334-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+334-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\WITI\.gradle\caches\transforms-3\474e7a0f66bec80256ee00d220935a78\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+335            </intent-filter>
+336        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+337        <activity
+337-->[com.google.android.play:core-common:2.0.3] C:\Users\WITI\.gradle\caches\transforms-3\e9d7e9b455c69e80005f182cdae28582\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:14:9-18:65
+338            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+338-->[com.google.android.play:core-common:2.0.3] C:\Users\WITI\.gradle\caches\transforms-3\e9d7e9b455c69e80005f182cdae28582\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:15:13-93
+339            android:exported="false"
+339-->[com.google.android.play:core-common:2.0.3] C:\Users\WITI\.gradle\caches\transforms-3\e9d7e9b455c69e80005f182cdae28582\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:16:13-37
+340            android:stateNotNeeded="true"
+340-->[com.google.android.play:core-common:2.0.3] C:\Users\WITI\.gradle\caches\transforms-3\e9d7e9b455c69e80005f182cdae28582\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:17:13-42
+341            android:theme="@style/Theme.PlayCore.Transparent" />
+341-->[com.google.android.play:core-common:2.0.3] C:\Users\WITI\.gradle\caches\transforms-3\e9d7e9b455c69e80005f182cdae28582\transformed\jetified-core-common-2.0.3\AndroidManifest.xml:18:13-62
+342    </application>
+343
+344</manifest>

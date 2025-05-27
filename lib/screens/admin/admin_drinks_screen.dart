@@ -1,9 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AdminDrinksScreen extends StatefulWidget {
   const AdminDrinksScreen({super.key});
@@ -14,725 +16,766 @@ class AdminDrinksScreen extends StatefulWidget {
 
 class _AdminDrinksScreenState extends State<AdminDrinksScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final String imgbbApiKey = "f53f2b2d663578cc4c7ddba11a81a8dc";
 
-  // ImgBB API Key (replace with your actual API key)
-  final String imgbbApiKey =
-      'https://api.imgbb.com/1/upload?key=f53f2b2d663578cc4c7ddba11a81a8dc';
+  final List<String> drinkCategories = [
+    "Black Coffee",
+    "Cold Coffee",
+    "Latte",
+    "Mocha",
+    "Iced Latte",
+    "Blended Coffee",
+    "Hot Chocolate",
+    "Tea",
+    "Specialty"
+  ];
 
-  // Local drinks data
-  final Map<String, List<Map<String, dynamic>>> _localDrinks = {
-    'Black Coffee': [
-      {
-        'name': 'Espresso',
-        'image': 'assets/images/e1.jpg',
-        'ingredients': {'Espresso': '1 shot'},
-        'preparation':
-            'Brew a single shot of espresso using an espresso machine.',
-      },
-      {
-        'name': 'Americano',
-        'image': 'assets/images/d1.jpg',
-        'ingredients': {'Espresso': '1 shot', 'Hot Water': '6 oz'},
-        'preparation': 'Brew a shot of espresso and dilute it with hot water.',
-      },
-    ],
-    'Cold Coffee': [
-      {
-        'name': 'Iced Coffee',
-        'image': 'assets/images/e3.jpg',
-        'ingredients': {
-          'Coffee': '6 oz',
-          'Ice Cubes': 'As needed',
-          'Sugar': 'To taste'
-        },
-        'preparation':
-            'Brew hot coffee, cool it down, then add ice cubes and sugar.',
-      },
-      {
-        'name': 'Iced Latte',
-        'image': 'assets/images/e4.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Milk': '6 oz',
-          'Ice Cubes': 'As needed'
-        },
-        'preparation': 'Brew espresso, pour over ice, and add milk.',
-      },
-    ],
-    'Blended Coffee': [
-      {
-        'name': 'Mocha Frappuccino',
-        'image': 'assets/images/e5.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Ice': '1 cup',
-          'Chocolate Syrup': '2 tbsp',
-          'Milk': '1/2 cup'
-        },
-        'preparation':
-            'Blend espresso, chocolate syrup, milk, and ice until smooth.',
-      },
-      {
-        'name': 'Caramel Frappuccino',
-        'image': 'assets/images/e6.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Ice': '1 cup',
-          'Caramel Syrup': '2 tbsp',
-          'Milk': '1/2 cup'
-        },
-        'preparation':
-            'Blend espresso, caramel syrup, milk, and ice until smooth.',
-      },
-    ],
-    'Latte': [
-      {
-        'name': 'Vanilla Latte',
-        'image': 'assets/images/e7.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Milk': '6 oz',
-          'Vanilla Syrup': '1 tbsp'
-        },
-        'preparation':
-            'Brew espresso and mix with steamed milk and vanilla syrup.',
-      },
-      {
-        'name': 'Cinnamon Latte',
-        'image': 'assets/images/e8.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Milk': '6 oz',
-          'Cinnamon Syrup': '1 tbsp'
-        },
-        'preparation':
-            'Brew espresso and mix with steamed milk and cinnamon syrup.',
-      },
-    ],
-    'Mocha': [
-      {
-        'name': 'Classic Mocha',
-        'image': 'assets/images/d2.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Chocolate Syrup': '2 tbsp',
-          'Milk': '6 oz'
-        },
-        'preparation':
-            'Brew espresso, add chocolate syrup, and mix with steamed milk.',
-      },
-      {
-        'name': 'White Mocha',
-        'image': 'assets/images/e10.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'White Chocolate Syrup': '2 tbsp',
-          'Milk': '6 oz'
-        },
-        'preparation':
-            'Brew espresso, add white chocolate syrup, and mix with steamed milk.',
-      },
-    ],
-    'Iced Latte': [
-      {
-        'name': 'Iced Vanilla Latte',
-        'image': 'assets/images/f1.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Ice': 'As needed',
-          'Vanilla Syrup': '1 tbsp',
-          'Milk': '6 oz'
-        },
-        'preparation':
-            'Brew espresso, pour over ice, and add vanilla syrup and milk.',
-      },
-      {
-        'name': 'Iced Cinnamon Latte',
-        'image': 'assets/images/f2.jpg',
-        'ingredients': {
-          'Espresso': '1 shot',
-          'Ice': 'As needed',
-          'Cinnamon Syrup': '1 tbsp',
-          'Milk': '6 oz'
-        },
-        'preparation':
-            'Brew espresso, pour over ice, and add cinnamon syrup and milk.',
-      },
-    ],
-    'Specialty Coffee': [
-      {
-        'name': 'Affogato',
-        'image': 'assets/images/f3.jpg',
-        'ingredients': {'Espresso': '1 shot', 'Vanilla Ice Cream': '1 scoop'},
-        'preparation':
-            'Brew espresso and pour it over a scoop of vanilla ice cream.',
-      },
-      {
-        'name': 'Cortado',
-        'image': 'assets/images/f4.jpg',
-        'ingredients': {'Espresso': '1 shot', 'Steamed Milk': '1 oz'},
-        'preparation': 'Brew espresso and add a small amount of steamed milk.',
-      },
-    ],
-    'Decaf Coffee': [
-      {
-        'name': 'Decaf Espresso',
-        'image': 'assets/images/f5.jpg',
-        'ingredients': {'Decaf Espresso': '1 shot'},
-        'preparation': 'Brew a decaffeinated espresso shot.',
-      },
-      {
-        'name': 'Decaf Latte',
-        'image': 'assets/images/f5.jpg',
-        'ingredients': {'Decaf Espresso': '1 shot', 'Milk': '6 oz'},
-        'preparation': 'Brew decaf espresso and mix with steamed milk.',
-      },
-    ],
-    'Hot Chocolate': [
-      {
-        'name': 'Classic Hot Chocolate',
-        'image': 'assets/images/f6.jpg',
-        'ingredients': {'Milk': '1 cup', 'Chocolate Syrup': '2 tbsp'},
-        'preparation': 'Heat milk and mix in chocolate syrup.',
-      },
-      {
-        'name': 'White Hot Chocolate',
-        'image': 'assets/images/f7.jpg',
-        'ingredients': {'Milk': '1 cup', 'White Chocolate Syrup': '2 tbsp'},
-        'preparation': 'Heat milk and mix in white chocolate syrup.',
-      },
-    ],
-    'Tea': [
-      {
-        'name': 'Chai Latte',
-        'image': 'assets/images/f8.jpg',
-        'ingredients': {
-          'Black Tea': '1 bag',
-          'Milk': '6 oz',
-          'Chai Syrup': '1 tbsp'
-        },
-        'preparation':
-            'Brew black tea and mix with steamed milk and chai syrup.',
-      },
-      {
-        'name': 'Green Tea Latte',
-        'image': 'assets/images/f9.jpg',
-        'ingredients': {
-          'Green Tea': '1 bag',
-          'Milk': '6 oz',
-          'Honey': '1 tbsp'
-        },
-        'preparation': 'Brew green tea and mix with steamed milk and honey.',
-      },
-    ],
-  };
+  String? _selectedCategory;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController prepController = TextEditingController();
+  final List<TextEditingController> ingredientControllers = [];
+  File? _pickedImage;
+  Uint8List? _imageBytes;
+  bool _isLoading = false;
 
-  // Upload image to ImgBB and return the URL
-  Future<String?> _uploadImageToImgBB(File imageFile) async {
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory = drinkCategories.first;
+    ingredientControllers.add(TextEditingController());
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    prepController.dispose();
+    for (var controller in ingredientControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  Future<bool> _checkImageSourceAvailable() async {
     try {
-      final request = http.MultipartRequest(
+      final ImagePicker picker = ImagePicker();
+      return true;
+    } catch (e) {
+      debugPrint('Error checking image source: $e');
+      return false;
+    }
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      await _checkImageSourceAvailable();
+
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+
+      if (pickedFile != null) {
+        final bytes = await pickedFile.readAsBytes();
+        setState(() {
+          _imageBytes = bytes;
+          if (!kIsWeb) {
+            _pickedImage = File(pickedFile.path);
+          } else {
+            _pickedImage = null;
+          }
+        });
+      }
+    } catch (e) {
+      if (!mounted) return;
+      debugPrint('Image picker error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text(
+                "Could not access images. Please check app permissions in your device settings.")),
+      );
+    }
+  }
+
+  Future<String?> _uploadImageToImgBB() async {
+    if (_pickedImage == null && _imageBytes == null) return null;
+
+    setState(() => _isLoading = true);
+
+    try {
+      var request = http.MultipartRequest(
         'POST',
         Uri.parse('https://api.imgbb.com/1/upload'),
       );
-      request.fields['key'] = imgbbApiKey;
-      request.files
-          .add(await http.MultipartFile.fromPath('image', imageFile.path));
 
-      final response = await request.send();
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        final jsonResponse = json.decode(responseBody);
-        return jsonResponse['data']['url'];
+      request.fields['key'] = imgbbApiKey;
+
+      if (kIsWeb && _imageBytes != null) {
+        final base64Image = base64Encode(_imageBytes!);
+        request.fields['image'] = base64Image;
+      } else if (!kIsWeb && _pickedImage != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'image',
+          _pickedImage!.path,
+          filename: 'drink_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        ));
+      } else if (_imageBytes != null) {
+        final tempDir = await getTemporaryDirectory();
+        final tempFile = File(
+            '${tempDir.path}/temp_image_${DateTime.now().millisecondsSinceEpoch}.jpg');
+        await tempFile.writeAsBytes(_imageBytes!);
+
+        request.files.add(await http.MultipartFile.fromPath(
+          'image',
+          tempFile.path,
+          filename: 'drink_${DateTime.now().millisecondsSinceEpoch}.jpg',
+        ));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  'Failed to upload image. Status code: ${response.statusCode}')),
-        );
-        return null;
+        throw Exception('No image data available to upload');
+      }
+
+      var streamedResponse =
+          await request.send().timeout(const Duration(seconds: 15));
+      final responseString = await streamedResponse.stream.bytesToString();
+
+      debugPrint('ImgBB Response Code: ${streamedResponse.statusCode}');
+      debugPrint('ImgBB Response: $responseString');
+
+      if (streamedResponse.statusCode == 200) {
+        final jsonResponse = json.decode(responseString);
+        if (jsonResponse['success'] == true && jsonResponse['data'] != null) {
+          return jsonResponse['data']['url'];
+        } else {
+          throw Exception(
+              'Image upload returned success=false: ${jsonResponse['error'] ?? "Unknown error"}');
+        }
+      } else {
+        throw Exception(
+            'Failed to upload image. Status: ${streamedResponse.statusCode}, Response: $responseString');
       }
     } catch (e) {
+      debugPrint('Image upload error: $e');
+      if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading image: $e')),
+        SnackBar(content: Text("Image upload failed: ${e.toString()}")),
       );
       return null;
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  // Migrate local drinks to Firestore
-  Future<void> _migrateDrinks() async {
-    try {
-      final drinksRef = _firestore.collection('drinks');
-      final batch = _firestore.batch();
+  void _addNewDrink(BuildContext context) {
+    nameController.clear();
+    prepController.clear();
+    for (var controller in ingredientControllers) {
+      controller.dispose();
+    }
+    ingredientControllers.clear();
+    ingredientControllers.add(TextEditingController());
+    _pickedImage = null;
+    _imageBytes = null;
+    _selectedCategory = drinkCategories.first;
 
-      // Convert nested map structure to Firestore documents
-      for (var category in _localDrinks.keys) {
-        for (var drink in _localDrinks[category]!) {
-          final docRef = drinksRef.doc();
-          batch.set(docRef, {
-            ...drink,
-            'category': category,
-            'createdAt': FieldValue.serverTimestamp(),
-          });
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setStateDialog) {
+          return AlertDialog(
+            title: const Text("Add New Drink"),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<String>(
+                    value: _selectedCategory,
+                    items: drinkCategories.map((category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setStateDialog(() {
+                        _selectedCategory = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Category',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () async {
+                      await _pickImage();
+                      setStateDialog(() {});
+                    },
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: _imageBytes != null
+                          ? Image.memory(
+                              _imageBytes!,
+                              fit: BoxFit.cover,
+                            )
+                          : _pickedImage != null
+                              ? Image.file(_pickedImage!, fit: BoxFit.cover)
+                              : const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.image,
+                                        size: 50, color: Colors.grey),
+                                    SizedBox(height: 8),
+                                    Text("Tap to add image"),
+                                  ],
+                                ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Drink Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ...ingredientControllers.map((controller) {
+                    final index = ingredientControllers.indexOf(controller);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: controller,
+                              decoration: const InputDecoration(
+                                labelText: 'Ingredient',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.remove_circle,
+                                color: Colors.red),
+                            onPressed: () {
+                              setStateDialog(() {
+                                if (ingredientControllers.length > 1) {
+                                  ingredientControllers[index].dispose();
+                                  ingredientControllers.removeAt(index);
+                                } else {
+                                  ingredientControllers[index].clear();
+                                }
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      setStateDialog(() {
+                        ingredientControllers.add(TextEditingController());
+                      });
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text("Add Ingredient"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF794022),
+                      minimumSize: const Size(double.infinity, 48),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: prepController,
+                    decoration: const InputDecoration(
+                      labelText: 'Preparation',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: _isLoading ? null : () => _saveNewDrink(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF794022),
+                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : const Text("Add Drink"),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _saveNewDrink(BuildContext context) async {
+    if (nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Drink name is required")),
+      );
+      return;
+    }
+
+    if (prepController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Preparation instructions are required")),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      String? imageUrl;
+      if (_pickedImage != null || _imageBytes != null) {
+        imageUrl = await _uploadImageToImgBB();
+        if (imageUrl == null) {
+          throw Exception("Failed to upload image. Please try again.");
         }
       }
 
-      await batch.commit();
+      final ingredients = <String>[];
+      for (var controller in ingredientControllers) {
+        if (controller.text.trim().isNotEmpty) {
+          ingredients.add(controller.text.trim());
+        }
+      }
+
+      await _firestore.collection('drinks').add({
+        'name': nameController.text.trim(),
+        'preparation': prepController.text.trim(),
+        'ingredients': ingredients,
+        'image': imageUrl,
+        'category': _selectedCategory,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      if (!mounted) return;
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Drinks migrated successfully')),
+        const SnackBar(content: Text("Drink added successfully")),
       );
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Migration failed: $e')),
+        SnackBar(content: Text("Error adding drink: ${e.toString()}")),
       );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  // Delete a drink from Firestore
-  Future<void> _deleteDrink(BuildContext context, String drinkId) async {
-    try {
-      // Confirm deletion with the user
-      final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Confirm Delete'),
-          content: const Text('Are you sure you want to delete this drink?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Delete', style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        ),
-      );
+  Future<void> _editDrink(
+      String drinkId, Map<String, dynamic> drinkData) async {
+    nameController.text = drinkData['name'] ?? '';
+    prepController.text = drinkData['preparation'] ?? '';
+    _selectedCategory =
+        drinkData['category'] as String? ?? drinkCategories.first;
 
-      if (confirmed == true) {
-        // Delete the drink from Firestore
+    for (var controller in ingredientControllers) {
+      controller.dispose();
+    }
+    ingredientControllers.clear();
+
+    // Properly handle ingredients data
+    List<String> ingredients = [];
+    if (drinkData['ingredients'] != null) {
+      if (drinkData['ingredients'] is List) {
+        ingredients = List<String>.from(
+            drinkData['ingredients'].map((item) => item.toString()));
+      } else {
+        ingredients = [drinkData['ingredients'].toString()];
+      }
+    }
+
+    for (var ingredient in ingredients) {
+      ingredientControllers.add(TextEditingController(text: ingredient));
+    }
+
+    if (ingredientControllers.isEmpty) {
+      ingredientControllers.add(TextEditingController());
+    }
+
+    _pickedImage = null;
+    _imageBytes = null;
+
+    await showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setStateDialog) {
+          return AlertDialog(
+            title: const Text("Edit Drink"),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<String>(
+                    value: _selectedCategory,
+                    items: drinkCategories.map((category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setStateDialog(() {
+                        _selectedCategory = value;
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      labelText: 'Category',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () async {
+                      await _pickImage();
+                      setStateDialog(() {});
+                    },
+                    child: Container(
+                      height: 150,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      child: _imageBytes != null
+                          ? Image.memory(
+                              _imageBytes!,
+                              fit: BoxFit.cover,
+                            )
+                          : _pickedImage != null
+                              ? Image.file(_pickedImage!, fit: BoxFit.cover)
+                              : drinkData['image'] != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        drinkData['image'],
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return const Center(
+                                            child: Icon(Icons.broken_image,
+                                                size: 50),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.image,
+                                            size: 50, color: Colors.grey),
+                                        SizedBox(height: 8),
+                                        Text("Tap to change image"),
+                                      ],
+                                    ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Drink Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ...ingredientControllers.map((controller) {
+                    final index = ingredientControllers.indexOf(controller);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: controller,
+                              decoration: const InputDecoration(
+                                labelText: 'Ingredient',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.remove_circle,
+                                color: Colors.red),
+                            onPressed: () {
+                              setStateDialog(() {
+                                if (ingredientControllers.length > 1) {
+                                  ingredientControllers[index].dispose();
+                                  ingredientControllers.removeAt(index);
+                                } else {
+                                  ingredientControllers[index].clear();
+                                }
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      setStateDialog(() {
+                        ingredientControllers.add(TextEditingController());
+                      });
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text("Add Ingredient"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF794022),
+                      minimumSize: const Size(double.infinity, 48),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: prepController,
+                    decoration: const InputDecoration(
+                      labelText: 'Preparation',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: _isLoading ? null : () => _updateDrink(drinkId),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF794022),
+                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(color: Colors.white),
+                      )
+                    : const Text("Update Drink"),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _updateDrink(String drinkId) async {
+    setState(() => _isLoading = true);
+
+    try {
+      String? imageUrl;
+      if (_pickedImage != null || _imageBytes != null) {
+        imageUrl = await _uploadImageToImgBB();
+      }
+
+      final ingredients = <String>[];
+      for (var controller in ingredientControllers) {
+        if (controller.text.trim().isNotEmpty) {
+          ingredients.add(controller.text.trim());
+        }
+      }
+
+      final updateData = {
+        'name': nameController.text.trim(),
+        'preparation': prepController.text.trim(),
+        'ingredients': ingredients,
+        'category': _selectedCategory,
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      if (imageUrl != null) {
+        updateData['image'] = imageUrl;
+      }
+
+      await _firestore.collection('drinks').doc(drinkId).update(updateData);
+
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Drink updated successfully")),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error updating drink: ${e.toString()}")),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _deleteDrink(String drinkId) async {
+    final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Confirm Delete"),
+            content: const Text("Are you sure you want to delete this drink?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child:
+                    const Text("Delete", style: TextStyle(color: Colors.red)),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+
+    if (confirmed) {
+      try {
         await _firestore.collection('drinks').doc(drinkId).delete();
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Drink deleted successfully')),
+          const SnackBar(content: Text("Drink deleted")),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to delete drink: ${e.toString()}")),
         );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting drink: $e')),
-      );
     }
-  }
-
-  // Show dialog to edit a drink
-  void _showEditDrinkDialog(
-      BuildContext context, String drinkId, Map<String, dynamic> data) {
-    final TextEditingController nameController =
-        TextEditingController(text: data['name']);
-    final TextEditingController imageController =
-        TextEditingController(text: data['image']);
-    final Map<String, TextEditingController> ingredientControllers = {};
-    final TextEditingController preparationController =
-        TextEditingController(text: data['preparation']);
-
-    // Initialize ingredient controllers
-    (data['ingredients'] as Map<String, dynamic>? ?? {}).forEach((key, value) {
-      ingredientControllers[key] =
-          TextEditingController(text: value.toString());
-    });
-
-    File? _pickedImage;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Drink'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: imageController,
-                      decoration: const InputDecoration(labelText: 'Image URL'),
-                      readOnly: true,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.image),
-                    onPressed: () async {
-                      final pickedFile = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (pickedFile != null) {
-                        setState(() {
-                          _pickedImage = File(pickedFile.path);
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-              if (_pickedImage != null)
-                Image.file(_pickedImage!, height: 100, fit: BoxFit.cover),
-              const SizedBox(height: 16),
-              const Text('Ingredients:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              ...ingredientControllers.entries.map((entry) {
-                final key = entry.key;
-                final controller = entry.value;
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                          labelText: 'Ingredient: $key',
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          ingredientControllers.remove(key);
-                        });
-                      },
-                    ),
-                  ],
-                );
-              }).toList(),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    ingredientControllers['New Ingredient'] =
-                        TextEditingController();
-                  });
-                },
-                child: const Text('Add Ingredient'),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: preparationController,
-                decoration: const InputDecoration(labelText: 'Preparation'),
-                maxLines: 3,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                // Upload image to ImgBB if a new image is selected
-                String? imageUrl = imageController.text;
-                if (_pickedImage != null) {
-                  imageUrl = await _uploadImageToImgBB(_pickedImage!);
-                }
-
-                // Update the drink in Firestore
-                await _firestore.collection('drinks').doc(drinkId).update({
-                  'name': nameController.text,
-                  'image': imageUrl,
-                  'ingredients': Map.fromEntries(ingredientControllers.entries
-                      .where((entry) => entry.value.text.isNotEmpty)
-                      .map((entry) => MapEntry(entry.key, entry.value.text))),
-                  'preparation': preparationController.text,
-                  'updatedAt': FieldValue.serverTimestamp(),
-                });
-                Navigator.pop(context);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error updating drink: $e')),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF794022),
-            ),
-            child: const Text('Update'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Show dialog to add a new drink
-  void _showAddDrinkDialog(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController imageController = TextEditingController();
-    final Map<String, TextEditingController> ingredientControllers = {};
-    final TextEditingController preparationController = TextEditingController();
-
-    File? _pickedImage;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add New Drink'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: imageController,
-                      decoration: const InputDecoration(labelText: 'Image URL'),
-                      readOnly: true,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.image),
-                    onPressed: () async {
-                      final pickedFile = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (pickedFile != null) {
-                        setState(() {
-                          _pickedImage = File(pickedFile.path);
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
-              if (_pickedImage != null)
-                Image.file(_pickedImage!, height: 100, fit: BoxFit.cover),
-              const SizedBox(height: 16),
-              const Text('Ingredients:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              ...ingredientControllers.entries.map((entry) {
-                final key = entry.key;
-                final controller = entry.value;
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                          labelText: 'Ingredient: $key',
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          ingredientControllers.remove(key);
-                        });
-                      },
-                    ),
-                  ],
-                );
-              }).toList(),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    ingredientControllers['New Ingredient'] =
-                        TextEditingController();
-                  });
-                },
-                child: const Text('Add Ingredient'),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: preparationController,
-                decoration: const InputDecoration(labelText: 'Preparation'),
-                maxLines: 3,
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                // Upload image to ImgBB if a new image is selected
-                String? imageUrl;
-                if (_pickedImage != null) {
-                  imageUrl = await _uploadImageToImgBB(_pickedImage!);
-                }
-
-                // Add the drink to Firestore
-                await _firestore.collection('drinks').add({
-                  'name': nameController.text,
-                  'image': imageUrl,
-                  'ingredients': Map.fromEntries(ingredientControllers.entries
-                      .where((entry) => entry.value.text.isNotEmpty)
-                      .map((entry) => MapEntry(entry.key, entry.value.text))),
-                  'preparation': preparationController.text,
-                  'createdAt': FieldValue.serverTimestamp(),
-                });
-                Navigator.pop(context);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error adding drink: $e')),
-                );
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF794022),
-            ),
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Show drink details
-  void _showDrinkDetails(BuildContext context, Map<String, dynamic> drink) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(drink['name'] ?? 'Drink Details'),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (drink['image'] != null)
-                Image.network(drink['image'], height: 150, fit: BoxFit.cover),
-              const SizedBox(height: 16),
-              const Text('Ingredients:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              ...(drink['ingredients'] as Map<String, dynamic>? ?? {})
-                  .entries
-                  .map((e) {
-                return Text('• ${e.key}: ${e.value}');
-              }).toList(),
-              const SizedBox(height: 16),
-              const Text('Preparation:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(drink['preparation'] ?? ''),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Drinks'),
+        title: const Text(
+          'Manage Drinks',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFF794022),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _showAddDrinkDialog(context),
-          ),
-          IconButton(
-            icon: const Icon(Icons.cloud_upload),
-            onPressed: _migrateDrinks,
-            tooltip: 'Migrate Local Drinks',
+            icon: const Icon(Icons.add, color: Colors.white),
+            onPressed: () => _addNewDrink(context),
           ),
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('drinks').orderBy('category').snapshots(),
+        stream: _firestore
+            .collection('drinks')
+            .orderBy('createdAt', descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('No drinks found in Firestore'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _migrateDrinks,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF794022),
-                    ),
-                    child: const Text('Migrate Local Drinks'),
-                  ),
-                ],
+
+          final drinks = snapshot.data!.docs;
+
+          if (drinks.isEmpty) {
+            return const Center(
+              child: Text(
+                'No drinks added yet. Tap the + button to add a drink.',
+                style: TextStyle(fontSize: 16),
               ),
             );
           }
-          // Group drinks by category
-          final drinksByCategory = <String, List<DocumentSnapshot>>{};
-          for (final doc in snapshot.data!.docs) {
-            final category =
-                (doc.data() as Map<String, dynamic>)['category'] as String? ??
-                    'Uncategorized';
-            drinksByCategory.putIfAbsent(category, () => []).add(doc);
-          }
-          return ListView(
-            children: drinksByCategory.entries.map((entry) {
-              return ExpansionTile(
-                title: Text(
-                  entry.key,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF794022),
-                  ),
-                ),
-                children: entry.value.map((doc) {
-                  final data = doc.data() as Map<String, dynamic>;
-                  return Card(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            const Color(0xFF794022).withOpacity(0.1),
-                        child: const Icon(Icons.local_drink,
-                            color: Color(0xFF794022)),
-                      ),
-                      title: Text(
-                        data['name'] ?? '',
+
+          return ListView.builder(
+            itemCount: drinks.length,
+            itemBuilder: (context, index) {
+              final drink = drinks[index];
+              final data = drink.data() as Map<String, dynamic>;
+              return Card(
+                margin: const EdgeInsets.all(8),
+                child: ListTile(
+                  leading: data['image'] != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            data['image'],
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image,
+                                  color: Colors.red);
+                            },
+                          ),
+                        )
+                      : const Icon(Icons.local_drink, color: Color(0xFF794022)),
+                  title: Text(data['name'] ?? ''),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data['category'] ?? 'No category',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(data['preparation'] ?? ''),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () =>
-                                _showEditDrinkDialog(context, doc.id, data),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deleteDrink(context, doc.id),
-                          ),
-                        ],
+                      Text(
+                        data['preparation'] ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      onTap: () => _showDrinkDetails(context, data),
-                    ),
-                  );
-                }).toList(),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () => _editDrink(drink.id, data),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteDrink(drink.id),
+                      ),
+                    ],
+                  ),
+                ),
               );
-            }).toList(),
+            },
           );
         },
       ),

@@ -269,7 +269,7 @@ class HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CurriculumPage(),
+                            builder: (context) => const CurriculumScreen(),
                           ),
                         );
                       },
